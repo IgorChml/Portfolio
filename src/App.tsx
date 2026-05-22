@@ -295,7 +295,7 @@ export default function App() {
           {/* Quick legal/nav links */}
           <div className="flex flex-wrap gap-6 text-neutral-500">
             <a href="https://igorchmiel.pl" target="_blank" rel="noopener noreferrer" className="hover:text-brand transition-colors font-semibold">igorchmiel.pl</a>
-            <a href="mailto:businesschmiel@gmail.com" className="hover:text-brand transition-colors font-semibold">E-mail</a>
+            <a href="mailto:kontakt@igorchmiel.pl" className="hover:text-brand transition-colors font-semibold">E-mail</a>
             <span>© 2026. Wszystkie prawa zastrzeżone.</span>
           </div>
         </div>

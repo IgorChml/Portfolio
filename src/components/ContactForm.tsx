@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, User, Mail, MessageSquare, CheckCircle, MailCheck, AlertTriangle, Inbox, Trash2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { ContactMessage } from '../types';
 
 export default function ContactForm() {
@@ -14,7 +15,16 @@ export default function ContactForm() {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successType, setSuccessType] = useState<'simulated' | 'real'>('simulated');
+  const [errorMsg, setErrorMsg] = useState('');
   const [messages, setMessages] = useState<ContactMessage[]>([]);
+
+  // Safe credentials lookup with TypeScript typecasting
+  const metaEnv = (import.meta as any).env || {};
+  const serviceId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
+  const templateId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
+  const publicKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
+  const isEmailJSConfigured = !(!serviceId || !templateId || !publicKey);
 
   // Load and sync messages from localStorage
   useEffect(() => {
@@ -33,36 +43,90 @@ export default function ContactForm() {
     if (!name || !email || !message) return;
 
     setIsSubmitting(true);
+    setErrorMsg('');
 
-    // Simulate server side posting roundtrip
-    setTimeout(() => {
-      const newMessage: ContactMessage = {
-        id: Math.random().toString(36).substring(2, 9),
-        name,
-        email,
-        message,
-        timestamp: new Date().toLocaleTimeString('pl-PL', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        })
-      };
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      reply_to: email,
+      message_message: message,
+      message: message,
+      name: name,
+      email: email,
+      to_email: 'kontakt@igorchmiel.pl'
+    };
 
-      const updated = [newMessage, ...messages];
-      setMessages(updated);
-      localStorage.setItem('igor_portfolio_messages', JSON.stringify(updated));
+    if (!isEmailJSConfigured) {
+      console.warn('Wykryto brak konfiguracji EmailJS w pliku .env. Przywrócono tryb demonstracyjny w celach testowych.');
+      
+      setTimeout(() => {
+        const newMessage: ContactMessage = {
+          id: Math.random().toString(36).substring(2, 9),
+          name,
+          email,
+          message,
+          timestamp: new Date().toLocaleTimeString('pl-PL', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          })
+        };
 
-      setIsSubmitting(false);
-      setSuccess(true);
+        const updated = [newMessage, ...messages];
+        setMessages(updated);
+        localStorage.setItem('igor_portfolio_messages', JSON.stringify(updated));
 
-      // Clear main fields
-      setName('');
-      setEmail('');
-      setMessage('');
+        setIsSubmitting(false);
+        setSuccess(true);
+        setSuccessType('simulated');
 
-      // Pulse off success banner
-      setTimeout(() => setSuccess(false), 6000);
-    }, 850);
+        // Clear main fields
+        setName('');
+        setEmail('');
+        setMessage('');
+
+        // Pulse off success banner
+        setTimeout(() => setSuccess(false), 9000);
+      }, 750);
+      return;
+    }
+
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then((response) => {
+        console.log('EmailJS Success response status:', response.status, response.text);
+        
+        const newMessage: ContactMessage = {
+          id: Math.random().toString(36).substring(2, 9),
+          name,
+          email,
+          message,
+          timestamp: new Date().toLocaleTimeString('pl-PL', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+          })
+        };
+
+        const updated = [newMessage, ...messages];
+        setMessages(updated);
+        localStorage.setItem('igor_portfolio_messages', JSON.stringify(updated));
+
+        setIsSubmitting(false);
+        setSuccess(true);
+        setSuccessType('real');
+
+        // Clear main fields
+        setName('');
+        setEmail('');
+        setMessage('');
+
+        setTimeout(() => setSuccess(false), 8000);
+      })
+      .catch((err) => {
+        console.error('EmailJS error send outcome:', err);
+        setIsSubmitting(false);
+        setErrorMsg('Błąd wysyłania (EmailJS): ' + (err.text || err.message || JSON.stringify(err)));
+      });
   };
 
   const deleteMessage = (id: string) => {
@@ -115,8 +179,8 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <span className="text-neutral-450 text-[10px] font-mono uppercase tracking-wider block font-bold">Adres E-mail</span>
-                    <a href="mailto:businesschmiel@gmail.com" className="text-neutral-900 hover:text-brand text-sm font-semibold transition-colors">
-                      businesschmiel@gmail.com
+                    <a href="mailto:kontakt@igorchmiel.pl" className="text-neutral-900 hover:text-brand text-sm font-semibold transition-colors">
+                      kontakt@igorchmiel.pl
                     </a>
                   </div>
                 </div>
@@ -135,9 +199,23 @@ export default function ContactForm() {
                 </div>
               </div>
 
-              <div className="bg-white p-4 rounded border border-neutral-200">
+              <div className="bg-white p-4 rounded border border-neutral-200 space-y-2">
+                <div className="flex items-center space-x-2">
+                  <span className={`w-2 h-2 rounded-full ${
+                    isEmailJSConfigured
+                      ? 'bg-emerald-500 animate-pulse'
+                      : 'bg-amber-400'
+                  }`} />
+                  <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-neutral-600">
+                    {isEmailJSConfigured
+                      ? 'EmailJS: Połączono'
+                      : 'EmailJS: Tryb Demo'}
+                  </span>
+                </div>
                 <p className="text-[11px] text-neutral-500 leading-relaxed font-sans">
-                  💡 <strong>Wskazówka wdrażania:</strong> W końcowym rozwiązaniu produkcyjnym formularz ten można połączyć bezpośrednio z usługą <strong>EmailJS</strong> lub <strong>Resend</strong> za pomocą pojedynczego calla API w celu bezpośredniej wysyłki maili na pocztę.
+                  {isEmailJSConfigured
+                    ? 'Formularz jest w pełni połączony z Twoim kontem EmailJS i wysyła wiadomości bezpośrednio na kontakt@igorchmiel.pl.'
+                    : 'Aby odbierać wiadomości bezpośrednio na swój e-mail, ustaw w pliku .env zmienne środowiskowe: VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID oraz VITE_EMAILJS_PUBLIC_KEY.'}
                 </p>
               </div>
             </div>
@@ -277,7 +355,7 @@ export default function ContactForm() {
               </div>
             </form>
 
-            {/* Success Modal popup notification card */}
+            {/* Success and Error Modal notifications */}
             <AnimatePresence>
               {success && (
                 <motion.div
@@ -289,9 +367,30 @@ export default function ContactForm() {
                   <CheckCircle size={16} className="shrink-0 mt-0.5 text-emerald-600" />
                   <div className="space-y-1">
                     <p className="font-bold">Wiadomość została nadana pomyślnie!</p>
-                    <p className="text-[11px] text-neutral-500 leading-relaxed">
-                      Zapisano dynamiczny rekord w lokalnym kliencie (baza testowa). Aby zobaczyć zapisaną treść, przewiń do sekcji odebranej poczty po lewej stronie. Dziękujemy za wykonanie testowego formularza!
-                    </p>
+                    {successType === 'real' ? (
+                      <p className="text-[11px] text-neutral-500 leading-relaxed">
+                        Wiadomość została wysłana bezpośrednio na adres <strong>kontakt@igorchmiel.pl</strong> przez integrację EmailJS! Otrzymasz odpowiedź tak szybko, jak to możliwe.
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-neutral-500 leading-relaxed">
+                        Zapisano wpis w lokalnej skrzynce (panel testowy po lewej). Twój formularz jest gotowy do integracji z EmailJS! Po prostu uzupełnij klucze w pliku <code>.env</code>, a zapytania zaczną natychmiast trafiać bezpośrednio na <strong>kontakt@igorchmiel.pl</strong>.
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+
+              {errorMsg && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="mt-6 p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded flex items-start space-x-3 text-xs"
+                >
+                  <AlertTriangle size={16} className="shrink-0 mt-0.5 text-rose-600" />
+                  <div className="space-y-1">
+                    <p className="font-bold">Błąd podczas wysyłania wiadomości</p>
+                    <p className="text-[11px] leading-relaxed">{errorMsg}</p>
                   </div>
                 </motion.div>
               )}
