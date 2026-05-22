@@ -16,7 +16,7 @@ export const PROJECTS_DATA: Project[] = [
     detailedDescription: 'Nowoczesny sklep internetowy stworzony dla renomowanej marki zanęt karpiowych KociBaits. Projekt opiera się na szybkim systemie zakupowym, intuicyjnej nawigacji i elastycznych filtrach wyszukiwania produktów. Wdrożono bezpieczne płatności online oraz automatyczną obsługę procesów magazynowych i logistycznych.',
     tags: ['E-commerce', 'WooCommerce', 'Płatności Online', 'UX/UI', 'RWD'],
     localVideo: '/videos/kocibaits.mp4',
-    fallbackVideo: 'https://cdn.pixabay.com/video/2020/09/08/49341-457342790_medium.mp4', // beautiful water/lake fishing vibe
+    fallbackVideo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4', // beautiful water/lake fishing vibe
     siteUrl: 'https://www.kocibaits.pl',
     features: [
       'Kompleksowy system koszyka zakupowego i kasy ekspresowej',
@@ -38,7 +38,7 @@ export const PROJECTS_DATA: Project[] = [
     detailedDescription: 'Profesjonalna platforma wizerunkowa dla firmy CML Klimatyzacje obsługującej Poznań i okoliczne miejscowości. Głównym celem było maksymalne uproszczenie kontaktu i generowanie leadów. Strona zawiera interaktywny formularz darmowej wyceny oraz dynamiczny widget pobierający najnowsze, pięciogwiazdkowe opinie z Google Maps.',
     tags: ['Strona firmowa', 'Lead Generation', 'Google API', 'Kalkulator', 'SEO lokalne'],
     localVideo: '/videos/cml-klimatyzacje.mp4',
-    fallbackVideo: 'https://cdn.pixabay.com/video/2021/08/16/88719-605886989_medium.mp4', // clean cooling fan / modern interior breeze
+    fallbackVideo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4', // clean cooling fan / modern interior breeze
     siteUrl: 'https://cml-klimatyzacje.vercel.app',
     features: [
       'Dedykowany wielokrokowy konfigurator/formularz wyceny usług',
@@ -60,7 +60,7 @@ export const PROJECTS_DATA: Project[] = [
     detailedDescription: 'Zaprojektowany od podstaw butik internetowy z plakatami dekoracyjnymi wytwarzanymi we współpracy ze sztuczną inteligencją. Każdy element strony odzwierciedla artystyczny i luksusowy charakter oferowanych produktów. Serwis wyposażono w moduł kompletowania dostawy do Paczkomatów oraz zaawansowaną optymalizację meta tagów pod wyszukiwarkę Google.',
     tags: ['Plakaty AI', 'React', 'Sklep premium', 'InPost API', 'SEO On-Page'],
     localVideo: '/videos/artwall-design.mp4',
-    fallbackVideo: 'https://cdn.pixabay.com/video/2021/11/03/94178-644788190_medium.mp4', // gorgeous colorful abstract ink artwork
+    fallbackVideo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4', // gorgeous colorful abstract ink artwork
     siteUrl: 'https://artwalldesign.com.pl',
     features: [
       'Intuicyjna galeria plakatów z wizualizacjami we wnętrzach pokojowych',
@@ -82,7 +82,7 @@ export const PROJECTS_DATA: Project[] = [
     detailedDescription: 'Osobista marka i centralny hub usługowy realizowany na potrzeby pozyskiwania mikro, małych i średnich przedsiębiorstw. Strona w klarowny sposób dzieli ofertę na pakiety startowe i zaawansowane, demonstrując proces powstawania stron www, profesjonalizm technologiczny oraz zebrane dotychczas cyfrowe realizacje.',
     tags: ['Portfolio', 'Strona osobista', 'Bento Grid', 'Interaktywny Cennik', 'Lead Magnet'],
     localVideo: '/videos/igor-chmiel.mp4',
-    fallbackVideo: 'https://cdn.pixabay.com/video/2022/10/24/136270-763428987_medium.mp4', // sleek modern UI and tech analytics dashboard
+    fallbackVideo: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4', // sleek modern UI and tech analytics dashboard
     siteUrl: 'https://igorchmiel.pl',
     features: [
       'Modułowy, przykuwający uwagę układ sekcji bento',
