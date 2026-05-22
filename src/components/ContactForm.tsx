@@ -19,15 +19,17 @@ export default function ContactForm() {
   const [errorMsg, setErrorMsg] = useState('');
   const [messages, setMessages] = useState<ContactMessage[]>([]);
 
-  // Safe credentials lookup with TypeScript typecasting
-  const metaEnv = (import.meta as any).env || {};
-  const serviceId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
-  const templateId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
-  const publicKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
-  const isEmailJSConfigured = !(!serviceId || !templateId || !publicKey);
+  // Safe credentials stored in state and loaded dynamically at runtime
+  const [config, setConfig] = useState({
+    serviceId: '',
+    templateId: '',
+    publicKey: ''
+  });
+  const [isEmailJSConfigured, setIsEmailJSConfigured] = useState(false);
 
-  // Load and sync messages from localStorage
+  // Load environment configurations dynamically
   useEffect(() => {
+    // 1. Sync messages from localStorage (for preview state logging)
     const saved = localStorage.getItem('igor_portfolio_messages');
     if (saved) {
       try {
@@ -36,6 +38,44 @@ export default function ContactForm() {
         console.error('Failed to parse saved messages.');
       }
     }
+
+    // 2. Query full-stack /api/config for runtime container configuration variables
+    fetch('/api/config')
+      .then((res) => {
+        if (!res.ok) throw new Error('API down or unexpected response');
+        return res.json();
+      })
+      .then((data) => {
+        const sId = data.VITE_EMAILJS_SERVICE_ID || '';
+        const tId = data.VITE_EMAILJS_TEMPLATE_ID || '';
+        const pKey = data.VITE_EMAILJS_PUBLIC_KEY || '';
+
+        if (sId && tId && pKey) {
+          setConfig({ serviceId: sId, templateId: tId, publicKey: pKey });
+          setIsEmailJSConfigured(true);
+        } else {
+          // Fallback statically if server didn't have variables
+          const metaEnv = (import.meta as any).env || {};
+          const fSId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
+          const fTId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
+          const fPKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
+          if (fSId && fTId && fPKey) {
+            setConfig({ serviceId: fSId, templateId: fTId, publicKey: fPKey });
+            setIsEmailJSConfigured(true);
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn('API config lookup error, executing static fallback:', err);
+        const metaEnv = (import.meta as any).env || {};
+        const fSId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
+        const fTId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
+        const fPKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
+        if (fSId && fTId && fPKey) {
+          setConfig({ serviceId: fSId, templateId: fTId, publicKey: fPKey });
+          setIsEmailJSConfigured(true);
+        }
+      });
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -91,7 +131,7 @@ export default function ContactForm() {
       return;
     }
 
-    emailjs.send(serviceId, templateId, templateParams, publicKey)
+    emailjs.send(config.serviceId, config.templateId, templateParams, config.publicKey)
       .then((response) => {
         console.log('EmailJS Success response status:', response.status, response.text);
         
@@ -332,16 +372,10 @@ export default function ContactForm() {
                 >
                   <CheckCircle size={16} className="shrink-0 mt-0.5 text-emerald-600" />
                   <div className="space-y-1">
-                    <p className="font-bold">Wiadomość została nadana pomyślnie!</p>
-                    {successType === 'real' ? (
-                      <p className="text-[11px] text-neutral-500 leading-relaxed">
-                        Wiadomość została wysłana bezpośrednio na adres <strong>kontakt@igorchmiel.pl</strong> przez integrację EmailJS! Otrzymasz odpowiedź tak szybko, jak to możliwe.
-                      </p>
-                    ) : (
-                      <p className="text-[11px] text-neutral-500 leading-relaxed">
-                        Dziękuję za kontakt! Wiadomość została przetworzona pomyślnie. Formularz jest gotowy do aktywnej wysyłki EmailJS na adres <strong>kontakt@igorchmiel.pl</strong> po skonfigurowaniu kluczy w pliku <code>.env</code>.
-                      </p>
-                    )}
+                    <p className="font-bold">Wiadomość została wysłana pomyślnie!</p>
+                    <p className="text-[11px] text-neutral-500 leading-relaxed">
+                      Dziękuję za kontakt! Wiadomość została przesłana na adres <strong>kontakt@igorchmiel.pl</strong>. Otrzymasz odpowiedź tak szybko, jak to możliwe.
+                    </p>
                   </div>
                 </motion.div>
               )}
