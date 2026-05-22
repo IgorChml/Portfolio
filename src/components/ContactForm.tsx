@@ -5,9 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, User, Mail, MessageSquare, CheckCircle, MailCheck, AlertTriangle, Inbox, Trash2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-import { ContactMessage } from '../types';
+import { Send, User, Mail, MessageSquare, CheckCircle, AlertTriangle } from 'lucide-react';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
@@ -17,64 +15,23 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [successType, setSuccessType] = useState<'simulated' | 'real'>('simulated');
   const [errorMsg, setErrorMsg] = useState('');
-  const [messages, setMessages] = useState<ContactMessage[]>([]);
 
-  // Safe credentials stored in state and loaded dynamically at runtime
-  const [config, setConfig] = useState({
-    serviceId: '',
-    templateId: '',
-    publicKey: ''
-  });
-  const [isEmailJSConfigured, setIsEmailJSConfigured] = useState(false);
+  // Local state to keep track if Resend key is configured on the backend
+  const [isResendConfigured, setIsResendConfigured] = useState(false);
 
-  // Load environment configurations dynamically
+  // Check backend Resend configuration status on load
   useEffect(() => {
-    // 1. Sync messages from localStorage (for preview state logging)
-    const saved = localStorage.getItem('igor_portfolio_messages');
-    if (saved) {
-      try {
-        setMessages(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved messages.');
-      }
-    }
-
-    // 2. Query full-stack /api/config for runtime container configuration variables
     fetch('/api/config')
       .then((res) => {
-        if (!res.ok) throw new Error('API down or unexpected response');
+        if (!res.ok) throw new Error('config endpoint failed');
         return res.json();
       })
       .then((data) => {
-        const sId = data.VITE_EMAILJS_SERVICE_ID || '';
-        const tId = data.VITE_EMAILJS_TEMPLATE_ID || '';
-        const pKey = data.VITE_EMAILJS_PUBLIC_KEY || '';
-
-        if (sId && tId && pKey) {
-          setConfig({ serviceId: sId, templateId: tId, publicKey: pKey });
-          setIsEmailJSConfigured(true);
-        } else {
-          // Fallback statically if server didn't have variables
-          const metaEnv = (import.meta as any).env || {};
-          const fSId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
-          const fTId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
-          const fPKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
-          if (fSId && fTId && fPKey) {
-            setConfig({ serviceId: fSId, templateId: fTId, publicKey: fPKey });
-            setIsEmailJSConfigured(true);
-          }
-        }
+        setIsResendConfigured(!!data.isResendConfigured);
       })
       .catch((err) => {
-        console.warn('API config lookup error, executing static fallback:', err);
-        const metaEnv = (import.meta as any).env || {};
-        const fSId = metaEnv.VITE_EMAILJS_SERVICE_ID || '';
-        const fTId = metaEnv.VITE_EMAILJS_TEMPLATE_ID || '';
-        const fPKey = metaEnv.VITE_EMAILJS_PUBLIC_KEY || '';
-        if (fSId && fTId && fPKey) {
-          setConfig({ serviceId: fSId, templateId: fTId, publicKey: fPKey });
-          setIsEmailJSConfigured(true);
-        }
+        console.warn('API config lookup error:', err);
+        setIsResendConfigured(false);
       });
   }, []);
 
@@ -85,99 +42,36 @@ export default function ContactForm() {
     setIsSubmitting(true);
     setErrorMsg('');
 
-    const templateParams = {
-      from_name: name,
-      from_email: email,
-      reply_to: email,
-      message_message: message,
-      message: message,
-      name: name,
-      email: email,
-      to_email: 'kontakt@igorchmiel.pl'
-    };
-
-    if (!isEmailJSConfigured) {
-      console.warn('Wykryto brak konfiguracji EmailJS w pliku .env. Przywrócono tryb demonstracyjny w celach testowych.');
-      
-      setTimeout(() => {
-        const newMessage: ContactMessage = {
-          id: Math.random().toString(36).substring(2, 9),
-          name,
-          email,
-          message,
-          timestamp: new Date().toLocaleTimeString('pl-PL', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          })
-        };
-
-        const updated = [newMessage, ...messages];
-        setMessages(updated);
-        localStorage.setItem('igor_portfolio_messages', JSON.stringify(updated));
+    fetch('/api/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email, message })
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || 'Serwer zwrócił błąd podczas wysyłki wiadomości.');
+        }
 
         setIsSubmitting(false);
         setSuccess(true);
-        setSuccessType('simulated');
+        setSuccessType(data.simulated ? 'simulated' : 'real');
 
-        // Clear main fields
+        // Clear input form fields
         setName('');
         setEmail('');
         setMessage('');
 
-        // Pulse off success banner
-        setTimeout(() => setSuccess(false), 9000);
-      }, 750);
-      return;
-    }
-
-    emailjs.send(config.serviceId, config.templateId, templateParams, config.publicKey)
-      .then((response) => {
-        console.log('EmailJS Success response status:', response.status, response.text);
-        
-        const newMessage: ContactMessage = {
-          id: Math.random().toString(36).substring(2, 9),
-          name,
-          email,
-          message,
-          timestamp: new Date().toLocaleTimeString('pl-PL', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-          })
-        };
-
-        const updated = [newMessage, ...messages];
-        setMessages(updated);
-        localStorage.setItem('igor_portfolio_messages', JSON.stringify(updated));
-
-        setIsSubmitting(false);
-        setSuccess(true);
-        setSuccessType('real');
-
-        // Clear main fields
-        setName('');
-        setEmail('');
-        setMessage('');
-
+        // Dismiss success notification after 8 seconds
         setTimeout(() => setSuccess(false), 8000);
       })
-      .catch((err) => {
-        console.error('EmailJS error send outcome:', err);
+      .catch((err: any) => {
+        console.error('Resend delivery submission error:', err);
         setIsSubmitting(false);
-        setErrorMsg('Błąd wysyłania (EmailJS): ' + (err.text || err.message || JSON.stringify(err)));
+        setErrorMsg(err.message || 'Wystąpił problem z połączeniem podczas wysyłania wiadomości.');
       });
-  };
-
-  const deleteMessage = (id: string) => {
-    const filtered = messages.filter(m => m.id !== id);
-    setMessages(filtered);
-    localStorage.setItem('igor_portfolio_messages', JSON.stringify(filtered));
-  };
-
-  const clearAllMessages = () => {
-    setMessages([]);
-    localStorage.removeItem('igor_portfolio_messages');
   };
 
   return (

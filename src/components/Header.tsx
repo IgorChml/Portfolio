@@ -82,7 +82,7 @@ export default function Header() {
             onClick={() => scrollToSection('projects')}
             className="text-neutral-600 hover:text-brand font-sans font-semibold text-sm transition-colors cursor-pointer"
           >
-            Projekty wideo
+            Projekty
           </button>
           <button
             onClick={() => scrollToSection('contact')}
@@ -127,7 +127,7 @@ export default function Header() {
               onClick={() => scrollToSection('projects')}
               className="text-left text-neutral-800 hover:text-brand font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
             >
-              Projekty wideo
+              Projekty
             </button>
             <button
               onClick={() => scrollToSection('contact')}
