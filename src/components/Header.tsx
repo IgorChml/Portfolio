@@ -4,15 +4,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Code, ExternalLink, Calendar } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
-interface HeaderProps {
-  onGuideToggle: () => void;
-  isGuideOpen: boolean;
-}
-
-export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
+export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -95,18 +90,6 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
           >
             Kontakt
           </button>
-          
-          <button
-            onClick={onGuideToggle}
-            className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded font-mono text-xs border transition-all duration-300 cursor-pointer ${
-              isGuideOpen
-                ? 'bg-brand text-white border-brand shadow-sm shadow-brand/10'
-                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-brand-light hover:text-brand hover:border-brand-light'
-            }`}
-          >
-            <Code size={12} className={isGuideOpen ? 'text-white' : 'text-neutral-500'} />
-            <span>Instrukcja DIY</span>
-          </button>
 
           {/* Date Stamp */}
           <div className="text-[10px] text-neutral-500 font-mono flex items-center bg-neutral-50 px-2.5 py-1.5 rounded border border-neutral-200/85">
@@ -117,18 +100,6 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
 
         {/* Mobile Hamburger Toggle */}
         <div className="md:hidden flex items-center space-x-3">
-          <button
-            onClick={onGuideToggle}
-            className={`p-1.5 rounded border transition-colors ${
-              isGuideOpen
-                ? 'bg-brand text-white border-brand shadow-sm shadow-brand/10'
-                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-brand-light hover:text-brand hover:border-brand'
-            }`}
-            title="Instrukcja dodawania projektów"
-          >
-            <Code size={16} />
-          </button>
-          
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-neutral-700 hover:text-brand hover:bg-brand-light p-2 rounded transition-colors cursor-pointer"
@@ -163,20 +134,6 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
               className="text-left text-neutral-800 hover:text-brand font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
             >
               Kontakt
-            </button>
-
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onGuideToggle();
-              }}
-              className="flex items-center justify-between px-4 py-2.5 bg-neutral-50 hover:bg-brand-light hover:text-brand hover:border-brand border border-neutral-200 rounded font-mono text-xs transition-all duration-200"
-            >
-              <span className="flex items-center space-x-2">
-                <Code size={14} className="text-neutral-500 hover:text-brand" />
-                <span>Instrukcja dodawania projektów (DIY)</span>
-              </span>
-              <ExternalLink size={12} />
             </button>
             
             <div className="text-[10px] text-neutral-400 font-mono text-center pt-2">

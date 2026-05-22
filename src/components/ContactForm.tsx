@@ -164,7 +164,7 @@ export default function ContactForm() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left Column: Traditional Contact Blocks & Interactive Live inbox */}
+          {/* Left Column: Traditional Contact Blocks & Professional Benefits Card */}
           <div className="lg:col-span-5 space-y-8">
             <div className="bg-[#fafafa] border border-neutral-200/80 p-8 rounded space-y-6 shadow-sm">
               <h3 className="text-lg font-sans font-bold text-neutral-900 tracking-tight">
@@ -198,78 +198,44 @@ export default function ContactForm() {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-white p-4 rounded border border-neutral-200 space-y-2">
-                <div className="flex items-center space-x-2">
-                  <span className={`w-2 h-2 rounded-full ${
-                    isEmailJSConfigured
-                      ? 'bg-emerald-500 animate-pulse'
-                      : 'bg-amber-400'
-                  }`} />
-                  <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-neutral-600">
-                    {isEmailJSConfigured
-                      ? 'EmailJS: Połączono'
-                      : 'EmailJS: Tryb Demo'}
-                  </span>
-                </div>
-                <p className="text-[11px] text-neutral-500 leading-relaxed font-sans">
-                  {isEmailJSConfigured
-                    ? 'Formularz jest w pełni połączony z Twoim kontem EmailJS i wysyła wiadomości bezpośrednio na kontakt@igorchmiel.pl.'
-                    : 'Aby odbierać wiadomości bezpośrednio na swój e-mail, ustaw w pliku .env zmienne środowiskowe: VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID oraz VITE_EMAILJS_PUBLIC_KEY.'}
-                </p>
-              </div>
             </div>
 
-            {/* Interactive Local Inbox Dashboard */}
-            <div className="bg-[#fafafa] border border-neutral-200/80 p-6 rounded space-y-4 shadow-sm">
-              <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
-                <div className="flex items-center space-x-2">
-                  <Inbox className="text-neutral-700" size={16} />
-                  <h4 className="text-neutral-800 font-sans font-extrabold text-xs uppercase tracking-wider">
-                    Panel testowy (Wysłano: {messages.length})
-                  </h4>
-                </div>
-                {messages.length > 0 && (
-                  <button
-                    onClick={clearAllMessages}
-                    className="text-neutral-400 hover:text-brand text-[10px] font-mono flex items-center space-x-1 transition-colors cursor-pointer font-bold"
-                  >
-                    <Trash2 size={10} />
-                    <span>Usuń wszystko</span>
-                  </button>
-                )}
-              </div>
-
-              <div className="max-h-48 overflow-y-auto space-y-3 pr-1" id="message-inbox">
-                {messages.length === 0 ? (
-                  <div className="text-center py-6 text-neutral-400 text-xs font-sans leading-relaxed">
-                    Brak wysłanych zapytań deweloperskich. <br />Użyj formularza obok, aby przetestować interakcję!
+            {/* Premium Client Value Proposition Card */}
+            <div className="bg-[#fafafa] border border-neutral-200/80 p-8 rounded space-y-6 shadow-sm">
+              <h3 className="text-sm font-sans font-extrabold text-neutral-800 tracking-wider uppercase">
+                Gwarancja jakości współpracy
+              </h3>
+              
+              <div className="space-y-5">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2 text-neutral-900 font-sans font-bold text-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#111]" />
+                    <span>Indywidualne podejście</span>
                   </div>
-                ) : (
-                  messages.map(msg => (
-                    <motion.div
-                      key={msg.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="bg-white border border-neutral-200 p-3.5 rounded text-[11px] space-y-1 group relative shadow-xs"
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="text-neutral-900 font-sans font-bold">{msg.name}</span>
-                        <span className="text-neutral-450 font-mono text-[9px] font-semibold">{msg.timestamp}</span>
-                      </div>
-                      <div className="text-neutral-550 font-mono text-[10px] mb-1">{msg.email}</div>
-                      <p className="text-neutral-600 font-sans leading-relaxed break-words">{msg.message}</p>
-                      
-                      <button
-                        onClick={() => deleteMessage(msg.id)}
-                        className="absolute right-2.5 bottom-2.5 text-neutral-400 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity p-1 cursor-pointer"
-                        title="Usuń wpis"
-                      >
-                        <Trash2 size={11} />
-                      </button>
-                    </motion.div>
-                  ))
-                )}
+                  <p className="text-[11px] text-neutral-500 font-sans leading-relaxed pl-3.5">
+                    Każda witryna projektowana jest od zera, bez gotowych szablonów. Dopasowuję kod i design w 100% pod Twoją markę i cele biznesowe.
+                  </p>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2 text-neutral-900 font-sans font-bold text-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#111]" />
+                    <span>Prędkość i SEO</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 font-sans leading-relaxed pl-3.5">
+                    Stosuję wyłącznie czysty, semantyczny kod, co przekłada się na wyniki 95+ w Google Lighthouse oraz znakomitą bazę pod pozycjonowanie.
+                  </p>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2 text-neutral-900 font-sans font-bold text-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#111]" />
+                    <span>Bezpieczeństwo i wsparcie</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 font-sans leading-relaxed pl-3.5">
+                    Zapewniam pełną pomoc techniczną przy wdrożeniu i hostingach, a także gwarancję stabilności oraz darmową opiekę powdrożeniową.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -373,7 +339,7 @@ export default function ContactForm() {
                       </p>
                     ) : (
                       <p className="text-[11px] text-neutral-500 leading-relaxed">
-                        Zapisano wpis w lokalnej skrzynce (panel testowy po lewej). Twój formularz jest gotowy do integracji z EmailJS! Po prostu uzupełnij klucze w pliku <code>.env</code>, a zapytania zaczną natychmiast trafiać bezpośrednio na <strong>kontakt@igorchmiel.pl</strong>.
+                        Dziękuję za kontakt! Wiadomość została przetworzona pomyślnie. Formularz jest gotowy do aktywnej wysyłki EmailJS na adres <strong>kontakt@igorchmiel.pl</strong> po skonfigurowaniu kluczy w pliku <code>.env</code>.
                       </p>
                     )}
                   </div>

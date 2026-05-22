@@ -5,14 +5,13 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Play, Code, ArrowDownCircle, Mail, Globe, Sparkles, BookOpen } from 'lucide-react';
+import { Play, ArrowDownCircle, Mail } from 'lucide-react';
 
 import Header from './components/Header';
 import About from './components/About';
 import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import ContactForm from './components/ContactForm';
-import CustomInstructions from './components/CustomInstructions';
 import BrandLogo from './components/BrandLogo';
 
 import { PROJECTS_DATA } from './data';
@@ -21,7 +20,6 @@ import { Project } from './types';
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'ecommerce' | 'services' | 'portfolio'>('all');
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
 
   // Update mouse position normalized relative to screen center (-1 to 1)
@@ -57,11 +55,27 @@ export default function App() {
     }
   };
 
+  const handleScrollToContact = () => {
+    const el = document.getElementById('contact');
+    if (el) {
+      const offset = 80;
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = el.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="bg-[#fafafa] text-neutral-800 min-h-screen selection:bg-neutral-900 selection:text-white antialiased overflow-x-hidden">
       
       {/* Dynamic Header */}
-      <Header onGuideToggle={() => setIsGuideOpen(!isGuideOpen)} isGuideOpen={isGuideOpen} />
+      <Header />
 
       {/* Hero Section */}
       <section 
@@ -105,25 +119,15 @@ export default function App() {
 
         <div className="max-w-7xl mx-auto px-6 text-center space-y-10 relative z-10 w-full flex flex-col items-center">
           
-          {/* Top micro badges */}
+          {/* Elegant subtitled badge */}
           <motion.div
-            animate={{
-              x: mouseOffset.x * 6,
-              y: mouseOffset.y * 6,
-            }}
-            transition={{ type: 'spring', stiffness: 50, damping: 25 }}
-            className="z-10"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center space-x-2 bg-white/10 border border-white/20 px-4 py-2 rounded font-mono text-xs text-neutral-200 cursor-default select-none"
           >
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center space-x-2 bg-white/10 border border-white/20 px-4 py-2 rounded font-mono text-xs text-neutral-200 cursor-pointer hover:bg-white/20 hover:text-white transition-colors"
-              onClick={() => setIsGuideOpen(true)}
-            >
-              <Sparkles size={11} className="text-amber-400 animate-pulse" />
-              <span className="font-semibold uppercase tracking-wider text-[10px]">Nowość: Prezentacje wideo HD</span>
-            </motion.div>
+            <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+            <span className="font-semibold uppercase tracking-wider text-[10px]">Premium Web Design & Business Solution</span>
           </motion.div>
 
           {/* Master headlines with multi-depth parallax response */}
@@ -135,17 +139,12 @@ export default function App() {
               }}
               transition={{ type: 'spring', stiffness: 45, damping: 24 }}
             >
-              <motion.h1 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight leading-none"
-              >
+              <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight leading-none">
                 Moje Portfolio Stron Internetowych{' '}<br />
                 <span className="font-medium text-neutral-300 text-3xl sm:text-4xl md:text-5xl block mt-4">
                   Prezentowane w formie klipów wideo
                 </span>
-              </motion.h1>
+              </h1>
             </motion.div>
 
             <motion.div
@@ -156,14 +155,9 @@ export default function App() {
               transition={{ type: 'spring', stiffness: 45, damping: 24 }}
               className="mt-4"
             >
-              <motion.p 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-neutral-300 font-sans text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto"
-              >
+              <p className="text-neutral-300 font-sans text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
                 Projektuję nowoczesne, zoptymalizowane pod kątem konwersji i pozycjonowania strony internetowe dla małych oraz średnich firm. Zobacz, jak wyglądają i działają moje realizacje w akcji na żywo.
-              </motion.p>
+              </p>
             </motion.div>
           </div>
 
@@ -176,12 +170,7 @@ export default function App() {
             transition={{ type: 'spring', stiffness: 50, damping: 26 }}
             className="w-full sm:w-auto flex justify-center z-10"
           >
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
-            >
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
               <button
                 onClick={handleScrollToProjects}
                 className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-white hover:bg-neutral-100 text-neutral-900 font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 cursor-pointer shadow-md hover:scale-[1.01]"
@@ -191,30 +180,25 @@ export default function App() {
               </button>
               
               <button
-                onClick={() => setIsGuideOpen(true)}
+                onClick={handleScrollToContact}
                 className="w-full sm:w-auto flex items-center justify-center space-x-2.5 px-8 py-4 bg-white/10 border border-white/20 hover:bg-white/25 text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 cursor-pointer hover:scale-[1.01]"
               >
-                <Code size={12} className="text-neutral-300" />
-                <span>Instrukcja dodawania</span>
+                <Mail size={12} className="text-neutral-300" />
+                <span>Skontaktuj się ze mną</span>
               </button>
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Bottom mouse-scroll cue indicator */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="pt-16 hidden sm:block"
-          >
+          <div className="pt-16 hidden sm:block">
             <button 
               onClick={handleScrollToProjects}
-              className="flex flex-col items-center space-y-2 text-neutral-400 hover:text-white transition-colors cursor-pointer group"
+              className="flex flex-col items-center space-y-2 text-neutral-400 hover:text-white transition-colors cursor-pointer group animate-fade-in"
             >
               <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-400 group-hover:text-white transition-colors">Przewiń na dół</span>
               <ArrowDownCircle size={18} className="animate-bounce text-neutral-300 group-hover:text-black transition-colors" />
             </button>
-          </motion.div>
+          </div>
 
         </div>
       </section>
@@ -305,12 +289,6 @@ export default function App() {
       <ProjectModal 
         project={activeProject} 
         onClose={() => setActiveProject(null)} 
-      />
-
-      {/* Developer Instruction sandbox code generator block */}
-      <CustomInstructions 
-        isOpen={isGuideOpen} 
-        onClose={() => setIsGuideOpen(false)} 
       />
 
     </div>
