@@ -52,7 +52,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
       transition={{ duration: 0.5 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="bg-white border border-neutral-200/85 rounded overflow-hidden shadow-sm hover:border-neutral-400 hover:shadow-md transition-all duration-300 flex flex-col h-full group"
+      className="bg-white border border-neutral-200/85 rounded overflow-hidden shadow-sm hover:border-brand/30 hover:shadow-md transition-all duration-300 flex flex-col h-full group"
       id={`project-card-${project.id}`}
     >
       {/* Visual Header Frame / Interactive Video Preview */}
@@ -128,7 +128,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
           {/* Title */}
           <h3 
             onClick={() => onSelect(project)}
-            className="text-neutral-900 hover:text-neutral-600 cursor-pointer font-sans font-extrabold text-lg leading-snug tracking-tight transition-colors"
+            className="text-neutral-900 hover:text-brand cursor-pointer font-sans font-extrabold text-lg leading-snug tracking-tight transition-colors"
           >
             {project.title}
           </h3>
@@ -160,7 +160,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
         <div className="grid grid-cols-2 gap-3 pt-6 border-t border-neutral-150 mt-6">
           <button
             onClick={() => onSelect(project)}
-            className="flex items-center justify-center space-x-1 px-3 py-2.5 bg-neutral-900 hover:bg-black text-white font-sans font-bold text-xs rounded transition-all duration-200 cursor-pointer"
+            className="flex items-center justify-center space-x-1 px-3 py-2.5 bg-brand hover:bg-brand-dark text-white font-sans font-bold text-xs rounded transition-all duration-200 cursor-pointer shadow-sm shadow-brand/10"
           >
             <Play size={10} fill="currentColor" className="mr-1" />
             <span>Wideo</span>
@@ -171,7 +171,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center justify-center space-x-1 px-3 py-2.5 bg-white border border-neutral-200 hover:bg-neutral-50 hover:border-neutral-300 text-neutral-800 font-sans font-bold text-xs rounded transition-all duration-200 cursor-pointer"
+            className="flex items-center justify-center space-x-1 px-3 py-2.5 bg-white border border-neutral-200 hover:bg-brand-light hover:text-brand hover:border-brand/30 text-neutral-800 font-sans font-bold text-xs rounded transition-all duration-200 cursor-pointer"
           >
             <span>Strona</span>
             <ExternalLink size={10} className="shrink-0" />

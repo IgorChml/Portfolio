@@ -83,8 +83,8 @@ export default function ContactForm() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center space-x-2 bg-neutral-50 border border-neutral-200 px-3 py-1.5 rounded font-mono text-xs text-neutral-600">
-            <Mail size={12} className="text-neutral-500" />
+          <div className="inline-flex items-center space-x-2 bg-brand-light border border-brand/20 px-3 py-1.5 rounded font-mono text-xs text-brand">
+            <Mail size={12} className="text-brand" />
             <span className="font-semibold uppercase tracking-wider text-[10px]">POTRZEBUJESZ STRONY? NAPISZ DO MNIE</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-sans font-extrabold text-neutral-900 tracking-tight">
@@ -115,7 +115,7 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <span className="text-neutral-450 text-[10px] font-mono uppercase tracking-wider block font-bold">Adres E-mail</span>
-                    <a href="mailto:businesschmiel@gmail.com" className="text-neutral-900 hover:text-black text-sm font-semibold transition-colors">
+                    <a href="mailto:businesschmiel@gmail.com" className="text-neutral-900 hover:text-brand text-sm font-semibold transition-colors">
                       businesschmiel@gmail.com
                     </a>
                   </div>
@@ -128,7 +128,7 @@ export default function ContactForm() {
                   </div>
                   <div>
                     <span className="text-neutral-450 text-[10px] font-mono uppercase tracking-wider block font-bold">Portfolio online</span>
-                    <a href="https://igorchmiel.pl" target="_blank" rel="noopener noreferrer" className="text-neutral-900 hover:text-black text-sm font-semibold transition-colors">
+                    <a href="https://igorchmiel.pl" target="_blank" rel="noopener noreferrer" className="text-neutral-900 hover:text-brand text-sm font-semibold transition-colors">
                       igorchmiel.pl
                     </a>
                   </div>
@@ -154,7 +154,7 @@ export default function ContactForm() {
                 {messages.length > 0 && (
                   <button
                     onClick={clearAllMessages}
-                    className="text-neutral-400 hover:text-neutral-900 text-[10px] font-mono flex items-center space-x-1 transition-colors cursor-pointer font-bold"
+                    className="text-neutral-400 hover:text-brand text-[10px] font-mono flex items-center space-x-1 transition-colors cursor-pointer font-bold"
                   >
                     <Trash2 size={10} />
                     <span>Usuń wszystko</span>
@@ -217,7 +217,7 @@ export default function ContactForm() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="np. Jan Kowalski"
-                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-neutral-500 rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-200 transition-all font-sans"
+                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-brand rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-brand/20 transition-all font-sans"
                   />
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function ContactForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="np. jan@przyklad.pl"
-                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-neutral-500 rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-200 transition-all font-sans"
+                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-brand rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-brand/20 transition-all font-sans"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function ContactForm() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Opisz krótko swój projekt deweloperski, preferowany czas realizacji oraz zakładane funkcjonalności..."
-                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-neutral-500 rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-200 transition-all font-sans leading-relaxed resize-none"
+                    className="w-full bg-neutral-50 border border-neutral-200 focus:border-brand rounded py-3.5 pl-10 pr-4 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-brand/20 transition-all font-sans leading-relaxed resize-none"
                   />
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function ContactForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center space-x-2.5 py-3.5 bg-neutral-900 hover:bg-black text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-sm focus:outline-none"
+                  className="w-full flex items-center justify-center space-x-2.5 py-3.5 bg-brand hover:bg-brand-dark text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 disabled:opacity-50 cursor-pointer shadow-md shadow-brand/10 focus:outline-none"
                 >
                   {isSubmitting ? (
                     <span>Szyfrowanie i wysyłka...</span>

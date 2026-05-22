@@ -20,8 +20,8 @@ export default function About() {
           {/* Left Column: Intro & Stats */}
           <div className="lg:col-span-7 space-y-8">
             <div className="space-y-4">
-              <div className="inline-flex items-center space-x-2 bg-neutral-50 border border-neutral-200 px-3 py-1.5 rounded font-mono text-xs text-neutral-600">
-                <Zap size={12} className="text-neutral-400 animate-pulse" />
+              <div className="inline-flex items-center space-x-2 bg-brand-light border border-brand/20 px-3 py-1.5 rounded font-mono text-xs text-brand">
+                <Zap size={12} className="text-brand animate-pulse" />
                 <span className="font-semibold uppercase tracking-wider text-[10px]">PARTNER WZROSTU DLA MAREK</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-sans font-extrabold text-neutral-900 tracking-tight leading-tight">
@@ -116,7 +116,7 @@ export default function About() {
                       whileInView={{ width: `${skill.level}%` }}
                       transition={{ duration: 1, ease: 'easeOut', delay: i * 0.1 }}
                       viewport={{ once: true }}
-                      className="h-full bg-neutral-900 rounded"
+                      className="h-full bg-brand rounded shadow-sm shadow-brand/10"
                     />
                   </div>
                   <p className="text-neutral-500 text-[11px] font-sans leading-relaxed">

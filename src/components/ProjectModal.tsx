@@ -151,7 +151,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   step={0.1}
                   value={currentTime}
                   onChange={handleSeek}
-                  className="flex-1 accent-neutral-200 h-1 bg-white/20 rounded-lg cursor-pointer appearance-none range-sm focus:outline-none"
+                  className="flex-1 accent-brand h-1 bg-white/20 rounded-lg cursor-pointer appearance-none range-sm focus:outline-none"
                 />
                 <span className="font-mono text-[10px] text-slate-300 min-w-[28px]">
                   {formatTime(duration)}
@@ -263,7 +263,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 href={project.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center space-x-2 py-3.5 bg-neutral-900 hover:bg-black text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 shadow-sm cursor-pointer hover:scale-[1.01]"
+                className="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand hover:bg-brand-dark text-white font-sans font-bold text-xs uppercase tracking-wider rounded transition-all duration-200 shadow-md shadow-brand/10 cursor-pointer hover:scale-[1.01]"
               >
                 <span>Odwiedź stronę roboczą</span>
                 <ExternalLink size={12} />

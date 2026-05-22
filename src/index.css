@@ -4,4 +4,7 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-brand: #155DFC;
+  --color-brand-dark: #0046d3;
+  --color-brand-light: #eef4ff;
 }

@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Code, ExternalLink, Calendar } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 interface HeaderProps {
   onGuideToggle: () => void;
@@ -53,7 +54,7 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md border-b border-neutral-200/80 py-4 shadow-sm shadow-neutral-100/50'
-          : 'bg-white/50 backdrop-blur-sm py-6 border-b border-neutral-100/30'
+          : 'bg-white/90 backdrop-blur-md py-6 border-b border-neutral-100/30'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -63,11 +64,9 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
           className="flex items-center space-x-3 cursor-pointer group"
           id="logo-container"
         >
-          <div className="bg-neutral-900 text-white p-2.5 rounded font-mono font-bold tracking-tighter text-sm transition-transform duration-300 group-hover:scale-105 group-hover:bg-black">
-            IC
-          </div>
+          <BrandLogo className="w-10 h-10 transition-transform duration-300 group-hover:scale-105" />
           <div className="flex flex-col">
-            <span className="text-neutral-900 font-sans font-extrabold tracking-tight text-lg group-hover:text-neutral-600 transition-colors">
+            <span className="text-neutral-900 font-sans font-extrabold tracking-tight text-lg group-hover:text-brand transition-colors">
               Igor Chmiel
             </span>
             <span className="text-[10px] text-neutral-500 font-mono tracking-widest uppercase leading-none mt-0.5 font-bold">
@@ -80,19 +79,19 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
         <nav className="hidden md:flex items-center space-x-8" id="desktop-nav">
           <button
             onClick={() => scrollToSection('about')}
-            className="text-neutral-600 hover:text-black font-sans font-semibold text-sm transition-colors cursor-pointer"
+            className="text-neutral-600 hover:text-brand font-sans font-semibold text-sm transition-colors cursor-pointer"
           >
             O mnie
           </button>
           <button
             onClick={() => scrollToSection('projects')}
-            className="text-neutral-600 hover:text-black font-sans font-semibold text-sm transition-colors cursor-pointer"
+            className="text-neutral-600 hover:text-brand font-sans font-semibold text-sm transition-colors cursor-pointer"
           >
             Projekty wideo
           </button>
           <button
             onClick={() => scrollToSection('contact')}
-            className="text-neutral-600 hover:text-black font-sans font-semibold text-sm transition-colors cursor-pointer"
+            className="text-neutral-600 hover:text-brand font-sans font-semibold text-sm transition-colors cursor-pointer"
           >
             Kontakt
           </button>
@@ -101,11 +100,11 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
             onClick={onGuideToggle}
             className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded font-mono text-xs border transition-all duration-300 cursor-pointer ${
               isGuideOpen
-                ? 'bg-neutral-900 text-white border-black shadow-sm'
-                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100 hover:text-neutral-900'
+                ? 'bg-brand text-white border-brand shadow-sm shadow-brand/10'
+                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-brand-light hover:text-brand hover:border-brand-light'
             }`}
           >
-            <Code size={12} className="text-neutral-500" />
+            <Code size={12} className={isGuideOpen ? 'text-white' : 'text-neutral-500'} />
             <span>Instrukcja DIY</span>
           </button>
 
@@ -122,8 +121,8 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
             onClick={onGuideToggle}
             className={`p-1.5 rounded border transition-colors ${
               isGuideOpen
-                ? 'bg-neutral-900 text-white border-neutral-900'
-                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
+                ? 'bg-brand text-white border-brand shadow-sm shadow-brand/10'
+                : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-brand-light hover:text-brand hover:border-brand'
             }`}
             title="Instrukcja dodawania projektów"
           >
@@ -132,7 +131,7 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
           
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-neutral-700 hover:text-black hover:bg-neutral-100 p-2 rounded transition-colors cursor-pointer"
+            className="text-neutral-700 hover:text-brand hover:bg-brand-light p-2 rounded transition-colors cursor-pointer"
             id="mobile-menu-toggle"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -149,19 +148,19 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
           <div className="flex flex-col space-y-4">
             <button
               onClick={() => scrollToSection('about')}
-              className="text-left text-neutral-800 hover:text-black font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
+              className="text-left text-neutral-800 hover:text-brand font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
             >
               O mnie
             </button>
             <button
               onClick={() => scrollToSection('projects')}
-              className="text-left text-neutral-800 hover:text-black font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
+              className="text-left text-neutral-800 hover:text-brand font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
             >
               Projekty wideo
             </button>
             <button
               onClick={() => scrollToSection('contact')}
-              className="text-left text-neutral-800 hover:text-black font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
+              className="text-left text-neutral-800 hover:text-brand font-sans font-bold text-sm py-2 transition-colors border-b border-neutral-100"
             >
               Kontakt
             </button>
@@ -171,10 +170,10 @@ export default function Header({ onGuideToggle, isGuideOpen }: HeaderProps) {
                 setIsMobileMenuOpen(false);
                 onGuideToggle();
               }}
-              className="flex items-center justify-between px-4 py-2.5 bg-neutral-50 hover:bg-neutral-100 text-neutral-800 border border-neutral-200 rounded font-mono text-xs"
+              className="flex items-center justify-between px-4 py-2.5 bg-neutral-50 hover:bg-brand-light hover:text-brand hover:border-brand border border-neutral-200 rounded font-mono text-xs transition-all duration-200"
             >
               <span className="flex items-center space-x-2">
-                <Code size={14} className="text-neutral-500" />
+                <Code size={14} className="text-neutral-500 hover:text-brand" />
                 <span>Instrukcja dodawania projektów (DIY)</span>
               </span>
               <ExternalLink size={12} />
