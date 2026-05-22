@@ -50,7 +50,17 @@ export default function ContactForm() {
       body: JSON.stringify({ name, email, message })
     })
       .then(async (res) => {
-        const data = await res.json();
+        const contentType = res.headers.get('content-type') || '';
+        let data: any = {};
+        
+        if (contentType.includes('application/json')) {
+          data = await res.json();
+        } else {
+          const rawText = await res.text();
+          const cleanText = rawText.match(/<body[^>]*>([\s\S]*)<\/body>/i)?.[1]?.replace(/<[^>]+>/g, ' ').trim() || rawText;
+          throw new Error(cleanText.substring(0, 165) || `Błąd serwera (Status: ${res.status})`);
+        }
+
         if (!res.ok) {
           throw new Error(data.error || 'Serwer zwrócił błąd podczas wysyłki wiadomości.');
         }
